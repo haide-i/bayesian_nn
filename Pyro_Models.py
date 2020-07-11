@@ -31,7 +31,7 @@ pyro.set_rng_seed(101)
 
 # Suppose we are trying to figure out how much something weighs, but the scale we’re using is unreliable and gives slightly different answers every time we weigh the same object. We could try to compensate for this variability by integrating the noisy measurement information with a guess based on some prior knowledge about the object. We model not only the belief over weight, but also the result of taking a measurement.
 
-def scale(guess):
+def scale(guess): #set model
     weight = pyro.sample('weight', dist.Normal(guess, 1.0))
     return pyro.sample('measurement', dist.Normal(weight, 0.75))
 
@@ -57,7 +57,7 @@ def perfect_guide(guess):
 # +
 from torch.distributions import constraints
 
-def scale_parametrized_guide(guess):
+def scale_parametrized_guide(guess): 
     a = pyro.param('a', torch.tensor(guess))
     b = pyro.param('b', torch.tensor(1.), constraint=constraints.positive)
     return pyro.sample('weight', dist.Normal(a, b))
